@@ -1,14 +1,12 @@
-var vm = require('vm');
-
 module.exports = function( input, context, filename, callback ){
 
-  var cjsTask = require('cjs-task');
-  var task = cjsTask();
+  var vm = require('vm');
+  var task = require('cjs-task')();
   var localizePlugin = require('./localize-plugin');
   var baselineHandles = context.process._getActiveHandles().length;
 
-  var cmd = input.replace('\n', '');
-  var cmdBlocks = require('./expression-block-interpreter')( cmd );
+  var userInput = input.replace('\n', '');
+  var cmdBlocks = require('./expression-block-interpreter')( userInput );
 
   var thisBlock, pipeBlocks;
 
@@ -16,7 +14,7 @@ module.exports = function( input, context, filename, callback ){
 
     thisBlock = cmdBlocks[i].trim();
 
-    pipeBlocks = thisBlock.split(' | ');
+    pipeBlocks = require('./pipe-block-interpreter')( thisBlock );
 
     if( pipeBlocks.length < 2 ){      
       
