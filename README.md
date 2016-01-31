@@ -123,6 +123,11 @@ For now, clone this repository and run `npm install`.
 Run `npm start`.
 
 # FEEDBACK
+
+Like it? Hate it? Think it's pointless? Wanna help make it better? Just wanna say hi?
+
 twitter: @akamaozu
+
 email: uzo@designbymobius.ca
+
 carrier pidgeon: yellow and brown house somewhere in Lagos Nigeria.
