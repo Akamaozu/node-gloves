@@ -28,7 +28,7 @@ module.exports = function( input, context, filename, callback ){
           script.runInContext( context );
           onScriptEnd( function(){
             
-            if( index < cmd_blocks.length - 1 && typeof context.res !== 'undefined' ) console.log( context.res ); 
+            if( typeof context.res !== 'undefined' ) console.log( context.res ); 
       
             script = new vm.Script( 'res=null', { filename: filename });
             script.runInContext( context );
