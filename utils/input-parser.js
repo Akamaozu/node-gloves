@@ -21,14 +21,22 @@ module.exports = function( input, context, filename, callback ){
       var script = new vm.Script( 'res=' + localizePlugin( context.__plugins.list(), thisBlock ), { filename: filename });
       var blockName = 'script block ' + (i + 1)
 
-      task.step( blockName, ( function(script){
+      task.step( blockName, ( function(script, index){
 
         return function(){
 
           script.runInContext( context );
-          onScriptEnd( task.next );
+          onScriptEnd( function(){
+            
+            if( index < cmd_blocks.length - 1 && typeof context.res !== 'undefined' ) console.log( context.res ); 
+      
+            script = new vm.Script( 'res=null', { filename: filename });
+            script.runInContext( context );
+
+            task.next(); 
+          });
         }
-      })(script));
+      })(script, i));
     }
 
     else{
@@ -54,7 +62,7 @@ module.exports = function( input, context, filename, callback ){
 
     if( typeof context.res !== 'undefined' ){
 
-      console.log( context.res );
+      if( context.res !== null ) console.log( context.res );
 
       var script = new vm.Script( 'res=null', { filename: filename });
           script.runInContext( context );
