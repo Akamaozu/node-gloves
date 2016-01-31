@@ -7,51 +7,7 @@ module.exports = function( context ){
       plugins,
       hotkeys;
 
-  var task = cjsTask( function( err ){
-
-    if( err ){
-
-      console.log('[WARN] COULD NOT LOAD ALL PLUGINS');
-
-      for (var i = 0; i < err.length; i++) {
-        console.log( '[ERROR] ' + err[i].toUpperCase() ); 
-      };
-    }
-
-    else{
-
-      plugins = task.get('plugins');
-      hotkeys = task.get('hotkeys');
-
-      var errorLog = task.log();
-
-      if( errorLog.length > 0 ) console.log( errorLog );
-
-      var __plugins = {
-
-        list: function(){
-
-          return hotkeys;
-        }, 
-
-        use: function(){
-
-          var args = Array.prototype.slice.call(arguments);
-          var plugin = args.shift().split('.');
-          var keyspace = plugin[0];
-          var method = plugin[1];
-          var methodArgs = args;
-
-          if( !plugins[ keyspace ] ) throw new Error('plugin "' + keyspace + '" was not found');
-          if( !plugins[ keyspace ][ method ] ) throw new Error( keyspace + ' does not have "' + method + '" method');
-
-          plugins[ keyspace ][ method ].apply( plugins[ keyspace ][ method ], methodArgs );
-        }
-      }
-
-      context.__plugins = __plugins;
-    } 
-  });
+  var task = cjsTask();
 
   task.step('get plugin directories', function(){
 
@@ -110,6 +66,13 @@ module.exports = function( context ){
         continue;
       }
 
+      if( typeof context[ plugin._name ] !== 'undefined' ){
+
+        task.log('did not load plugin "' + pathToPlugins[i] + '/index.js"\n       name conflicts with global variable "' + plugin._name + '"');
+        fail += 1;
+        continue;
+      }
+
       map[ plugin._name ] = {}
 
       for( var key in plugin ){
@@ -125,6 +88,59 @@ module.exports = function( context ){
     task.set('plugins', map);
     task.set('hotkeys', hotkeys);
     task.next();
+  });
+
+  task.callback( function( err ){
+
+    if( err ){
+
+      console.log('[WARN] COULD NOT LOAD PLUGINS');
+
+      for (var i = 0; i < err.length; i++) {
+        console.log( '[ERROR] ' + err[i] ); 
+      };
+
+      throw new Error('plugin load error');
+    }
+
+    else{
+
+      plugins = task.get('plugins');
+      hotkeys = task.get('hotkeys');
+
+      var errorLog = task.log();
+
+      if( errorLog.length > 0 ){
+
+        for (var i = 0; i < errorLog.length; i++) {
+          console.log( '\n[WARN] ' + errorLog[i] ); 
+        };
+      }
+
+      var __plugins = {
+
+        list: function(){
+
+          return hotkeys;
+        }, 
+
+        use: function(){
+
+          var args = Array.prototype.slice.call(arguments);
+          var plugin = args.shift().split('.');
+          var keyspace = plugin[0];
+          var method = plugin[1];
+          var methodArgs = args;
+
+          if( !plugins[ keyspace ] ) throw new Error('plugin "' + keyspace + '" was not found');
+          if( !plugins[ keyspace ][ method ] ) throw new Error( keyspace + ' does not have "' + method + '" method');
+
+          plugins[ keyspace ][ method ].apply( plugins[ keyspace ][ method ], methodArgs );
+        }
+      }
+
+      context.__plugins = __plugins;
+    } 
   });
 
   task.start();
