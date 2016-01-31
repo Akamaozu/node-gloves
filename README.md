@@ -118,9 +118,9 @@ I stored a variable to my disc and in the next expression I fetch and pipe it to
 
 For now, clone this repository and run `npm install`.
 
-# Start node-gloves
+# Start
 
-Run `npm start`.
+`npm start`.
 
 # FEEDBACK
 
