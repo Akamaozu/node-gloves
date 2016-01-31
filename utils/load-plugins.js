@@ -59,6 +59,22 @@ module.exports = function( context ){
         continue;
       }
 
+      if( typeof plugin._name !== 'string' ){
+
+        task.log('"' + pathToPlugins[i] + '/index.js" name is not a string');
+        fail += 1;
+        continue;
+      }
+
+      var validator = new RegExp('^[a-zA-Z_-]+$');
+
+      if( !validator.test( plugin._name ) ){
+
+        task.log('"' + plugin._name + '"\'s name contains invalid characters');
+        fail += 1;
+        continue;
+      }
+
       if( map[ plugin._name ] ){
 
         task.log('plugin with name "' + plugin._name + '" already exists');
