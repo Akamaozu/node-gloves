@@ -8,20 +8,23 @@ module.exports = function( input, context, filename, callback ){
   var baselineHandles = context.process._getActiveHandles().length;
 
   var cmd = input.replace('\n', '');
-  var cmd_blocks = cmd.split(" && ");
+  var cmdBlocks = cmd.split(" && ");
 
-  for (var i = 0; i < cmd_blocks.length; i++) {
+  var thisBlock, pipeBlocks;
 
-    var thisBlock = cmd_blocks[i].trim();
+  for (var i = 0; i < cmdBlocks.length; i++){
 
-    var pipeBlocks = thisBlock.split(' | ');
+    thisBlock = cmdBlocks[i].trim();
+
+    pipeBlocks = thisBlock.split(' | ');
 
     if( pipeBlocks.length < 2 ){      
+      
+      var blockName = 'script block ' + (i + 1);
     
-      var script = new vm.Script( 'res=' + localizePlugin( context.__plugins.list(), thisBlock ), { filename: filename });
-      var blockName = 'script block ' + (i + 1)
+      task.step( blockName, ( function(index, thisBlock, blockName){
 
-      task.step( blockName, ( function(script, index){
+        var script = new vm.Script( 'res=' + localizePlugin( context.__plugins.list(), thisBlock ), { filename: filename });
 
         return function(){
 
@@ -36,40 +39,42 @@ module.exports = function( input, context, filename, callback ){
             task.next(); 
           });
         }
-      })(script, i));
+      })(i, thisBlock, blockName));
     }
 
     else{
 
-      for (var ii = 0; ii < pipeBlocks.length; ii++) {
+      for(var ii = 0; ii < pipeBlocks.length; ii++) {
 
-        var script = new vm.Script( 'res=' + localizePlugin( context.__plugins.list(), pipeBlocks[ii] ), { filename: filename });
         var blockName = 'script block ' + (i + 1) + ' pipe step ' + (ii + 1);
+        
+        task.step( blockName, ( function(index, pipeBlocks, blockName){
 
-        task.step( blockName, ( function(script){
-
+          var script = new vm.Script( 'res=' + localizePlugin( context.__plugins.list(), pipeBlocks[ii] ), { filename: filename });
+          
           return function(){
 
             script.runInContext( context );
-            onScriptEnd( task.next );
+
+            onScriptEnd( function(){
+
+              if( index === pipeBlocks.length - 1 ){
+
+                if( typeof context.res !== 'undefined' ) console.log( context.res );
+              
+                script = new vm.Script( 'res=null', { filename: filename });
+                script.runInContext( context );
+              }
+
+              task.next(); 
+            });
           }
-        })(script));
+        })(ii, pipeBlocks, blockName));
       };
     }
   }
 
-  task.callback( function(){
-
-    if( typeof context.res !== 'undefined' ){
-
-      if( context.res !== null ) console.log( context.res );
-
-      var script = new vm.Script( 'res=null', { filename: filename });
-          script.runInContext( context );
-    }
-
-    context.displayPrompt();
-  });
+  task.callback( context.displayPrompt );
 
   task.start();
 
