@@ -8,7 +8,7 @@ module.exports = function( input, context, filename, callback ){
   var baselineHandles = context.process._getActiveHandles().length;
 
   var cmd = input.replace('\n', '');
-  var cmdBlocks = cmd.split(" && ");
+  var cmdBlocks = require('./expression-block-interpreter')( cmd );
 
   var thisBlock, pipeBlocks;
 
