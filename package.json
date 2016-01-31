@@ -1,0 +1,16 @@
+{
+  "name": "gloves",
+  "version": "0.0.1",
+  "description": "REPL for Work Automation",
+  "main": "gloves.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node gloves"
+  },
+  "author": "akamaozu <uzo@designbymobius.ca> (http://designbymobi.us/)",
+  "license": "ISC",
+  "dependencies": {
+    "cjs-task": "0.0.8",
+    "fs-extra": "^0.26.5"
+  }
+}
