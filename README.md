@@ -150,7 +150,7 @@ For now, clone this repository and run `npm install`.
     true
     ```
 
-3. `|` can't be passed to `node-gloves` yet. It understands `||` is a JavaScript but use a single pipe anywhere else and it'll break.  
+3. `|` can't be passed to `node-gloves` yet. It understands `||` is a JavaScript operator, but if use a single pipe anywhere else you'll get an error.  
 
 # FEEDBACK
 
