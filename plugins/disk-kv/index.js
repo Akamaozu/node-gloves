@@ -52,6 +52,8 @@ function get( key, callback ){
 
       var value = stash[ key ];
 
+      if( typeof value === 'undefined' ) return task.end('no value stored to key "' + key + '"');
+
       task.set('value', value);
 
       task.next();
@@ -78,7 +80,7 @@ function set( key, value, callback ){
       value: value
     });
 
-    else console.log( key + ' = ' + value );
+    else console.log({ [key]: value });
   });
 
   task.step('verify stash.json exists', function(){
