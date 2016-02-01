@@ -14,7 +14,7 @@ function get( key, callback ){
 
   var task = cjsTask( function( err ){
 
-    if( err ) return console.log( err );
+    if( err ) return console.log( '[' + module.exports._name + '] ' + err );
     
     if( typeof callback == 'function' ) callback( task.get('value') );
 
@@ -72,7 +72,7 @@ function set( key, value, callback ){
 
   var task = cjsTask( function( err, ok){
 
-    if( err ) return console.log( err );
+    if( err ) return console.log( '[' + module.exports._name + '] ' + err );
 
     if( typeof callback == 'function' ) callback({
       
@@ -81,6 +81,11 @@ function set( key, value, callback ){
     });
 
     else console.log({ [key]: value });
+  });
+
+  task.step('verify there is a value to save', function(){
+
+    if( typeof value === 'undefined' ) return task.end('no value given to store');
   });
 
   task.step('verify stash.json exists', function(){
