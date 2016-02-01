@@ -86,6 +86,7 @@ function set( key, value, callback ){
   task.step('verify there is a value to save', function(){
 
     if( typeof value === 'undefined' ) return task.end('no value given to store');
+    task.next();
   });
 
   task.step('verify stash.json exists', function(){
