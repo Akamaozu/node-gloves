@@ -25,7 +25,5 @@ module.exports = function( hotkeys, string ){
     oldHotkeys = hotkeys;
   }
 
-  console.log( string.replace( regexObj, "__plugins.use('" + "$&" + "',").replace("(',", "',") );
-
   return string.replace( regexObj, "__plugins.use('" + "$&" + "',").replace("(',", "',");
 }
