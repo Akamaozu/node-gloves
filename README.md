@@ -104,15 +104,17 @@ In addition to npm packages which are available because node-gloves is node, the
 This means you can compose functionality and package them up for reuse in the gloves enviroment.
 
 ```js
-gloves > disc-kv.set('greeting', 'hi there!') && disc-kv.get('greeting', function(v){ res = v }) | res.toUpperCase()
+gloves > disk-kv.set('greeting', 'hi there!') && disk-kv.get('greeting', function(v){ res = v }) | res.toUpperCase()
 'greeting = hi there!'
 'HI THERE!'
 gloves >
 ```
 
-`disc-kv` is a simple plugin that utilizies `require('fs')` to persist values to a json file. That way I can keep things even after I close node-gloves.
+`disk-kv` is a simple plugin that utilizies `require('fs')` to persist values to a json file. That way I can keep things even after I close node-gloves.
 
-I stored a variable to my disc and in the next expression I fetch and pipe it to `console.log`.
+I stored a variable to my disk and in the next expression I fetch and pipe it to `console.log`.
+
+I've included it in the plugins folder as a (*currently messy*) example of how to make a plugin for node-gloves.
 
 # Installation
 
@@ -121,6 +123,23 @@ For now, clone this repository and run `npm install`.
 # Start
 
 `npm start`.
+
+# GOTCHAS
+
+1. Currently can't use node magic variables `__dirname` and `__filename` directly in gloves command line. Not sure why it doesn't work but implementing it is trivial.
+
+2. You can't use `&&` as a logical operator in gloves if the statement is not wrapped in brackets.
+
+```js
+gloves > a && b
+// prints a
+// prints b
+```
+
+```js
+gloves > (a && b)
+true
+```
 
 # FEEDBACK
 
