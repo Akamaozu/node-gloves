@@ -39,13 +39,13 @@ _
 Node REPL returned your prompt BEFORE the callstack cleared. When setTimeout was done, it hijacked your caret when it needed to output.
 Even if you had started typing, it would just append the output to what you were already doing. Worse yet, it didn't make a clean prompt for you. No more caret :(
 
-What if you could chain consecutive individual statements?
+- What if you could chain consecutive individual statements?
 
-What if I could pipe results from one expression into the next?
+- What if I could pipe results from one expression into the next?
 
-What if the prompt understood the callstack and waited for it before returning?
+- What if the prompt understood the callstack and waited for it before returning?
 
-What if it didn't mindlessly output undefined returns?
+- What if it didn't mindlessly output undefined returns?
 
 **What if Node REPL was more like the command line?**
 
@@ -91,8 +91,8 @@ gloves >
 You can set `res` in callbacks to control what is passed on.
 
 ```js
-gloves > setTimeout( function(){ res = 2*2 }, 1000) | res * res | res * res + ' bottles of beer on the wall ...'
-'256 bottles of beer on the wall ...'
+gloves > require('fs').readFileSync('./package.json', 'utf8') | res.replace(/(a|e|i|o|u)/g, "@") | console.log( res )
+// package.json content with lower-case vowels replaced with @
 gloves >
 ```
 
