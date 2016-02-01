@@ -119,7 +119,7 @@ gloves > disk-kv.get('greeting', function(v){ res = v }) | res.toUpperCase()
 'HI THERE!'
 ```
 
-I stored a variable to my disk and in the next expression I fetch and pipe it to `console.log`.
+I stored a variable to my disk. Even after shutting down gloves, I can get and pipe it to `console.log`.
 
 Use disk-kv as an example of how to make a plugin for node-gloves.
 
