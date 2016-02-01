@@ -139,18 +139,18 @@ For now, clone this repository and run `npm install`.
 
 2. You can't use `&&` as a logical operator in gloves if the statement is not wrapped in brackets.
 
-```js
-gloves > a && b
-// prints a
-// prints b
-```
+    ```js
+    gloves > a && b
+    // prints a
+    // prints b
+    ```
 
-```js
-gloves > (a && b)
-true
-```
+    ```js
+    gloves > (a && b)
+    true
+    ```
 
-3. `|` can't be used in regular expressions yet.
+3. `|` can't be passed to `node-gloves` yet. It understands `||` is a JavaScript but use a single pipe anywhere else and it'll break.  
 
 # FEEDBACK
 
