@@ -14,7 +14,7 @@ module.exports = function( hotkeys, string ){
 
     for (var i = 0; i < iterations; i++) {
 
-      regexString += hotkeys[i].replace(/(.|\/)/g, '\\$1');
+      regexString += hotkeys[i].replace(/(\.)/g, '\\$1');
       
       if( i < iterations - 1) regexString += '|';
     };
@@ -24,6 +24,8 @@ module.exports = function( hotkeys, string ){
     cachedRegex = regexObj;
     oldHotkeys = hotkeys;
   }
+
+  console.log( string.replace( regexObj, "__plugins.use('" + "$&" + "',").replace("(',", "',") );
 
   return string.replace( regexObj, "__plugins.use('" + "$&" + "',").replace("(',", "',");
 }
