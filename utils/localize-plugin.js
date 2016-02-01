@@ -2,6 +2,10 @@ var oldHotkeys, cachedRegex, regexObj, regexString = '';
 
 module.exports = function( hotkeys, string ){
 
+  if( Object.prototype.toString.call( hotkeys ) !== '[object Array]') throw new Error('hotkeys must be an array');
+
+  if( hotkeys.length === 0 ) return string;
+
   if( hotkeys == oldHotkeys ) regexObj = cachedRegex;
 
   else{
@@ -10,7 +14,7 @@ module.exports = function( hotkeys, string ){
 
     for (var i = 0; i < iterations; i++) {
 
-      regexString += hotkeys[i].replace('.', '\\.');
+      regexString += hotkeys[i].replace(/(.|\/)/g, '\\$1');
       
       if( i < iterations - 1) regexString += '|';
     };
