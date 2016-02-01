@@ -103,18 +103,27 @@ In addition to npm packages which are available because node-gloves is node, the
 
 This means you can compose functionality and package them up for reuse in the gloves enviroment.
 
+Included as a (*currently messy*) example is disk-kv.
+
+`disk-kv` is a simple plugin that utilizies `require('fs')` to persist values to a json file. That way you can keep things even after closing node-gloves. 
+
 ```js
-gloves > disk-kv.set('greeting', 'hi there!') && disk-kv.get('greeting', function(v){ res = v }) | res.toUpperCase()
-'greeting = hi there!'
-'HI THERE!'
-gloves >
+gloves > disk-kv.set('greeting', 'hi there!')
+{greeting: "hi there!"}
 ```
 
-`disk-kv` is a simple plugin that utilizies `require('fs')` to persist values to a json file. That way I can keep things even after I close node-gloves.
+![Much later](http://ragegenerator.com/images/ragebuilder-faces/Some-Time-Later-1/01%20-%20later7.jpg "Much later")
+
+```js
+gloves > disk-kv.get('greeting', function(v){ res = v }) | res.toUpperCase()
+'HI THERE!'
+```
 
 I stored a variable to my disk and in the next expression I fetch and pipe it to `console.log`.
 
-I've included it in the plugins folder as a (*currently messy*) example of how to make a plugin for node-gloves.
+Use disk-kv as an example of how to make a plugin for node-gloves.
+
+Use `__plugins.list()` to show loaded plugin methods. 
 
 # Installation
 
