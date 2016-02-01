@@ -54,14 +54,14 @@ module.exports = function( context ){
       }
 
       catch(e){
-        task.log('could not find index.js in "' + pathToPlugins[i] + '"');
+        task.log('did not load plugin "' + pathToPlugins[i] + '/index.js"\n       could not find index.js');
         console.log( e );
         continue;
       }
 
       if( typeof plugin._name !== 'string' ){
 
-        task.log('"' + pathToPlugins[i] + '/index.js" name is not a string');
+        task.log('did not load plugin "' + pathToPlugins[i] + '/index.js"\n       name is not a string');
         fail += 1;
         continue;
       }
@@ -70,14 +70,14 @@ module.exports = function( context ){
 
       if( !validator.test( plugin._name ) ){
 
-        task.log('"' + plugin._name + '"\'s name contains invalid characters');
+        task.log('did not load plugin "' + pathToPlugins[i] + '/index.js"\n       name contains invalid characters');
         fail += 1;
         continue;
       }
 
       if( map[ plugin._name ] ){
 
-        task.log('plugin with name "' + plugin._name + '" already exists');
+        task.log('did not load plugin "' + pathToPlugins[i] + '/index.js"\n       plugin with name "' + plugin._name + '" already exists');
         fail += 1;
         continue;
       }
