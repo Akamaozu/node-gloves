@@ -1,3 +1,4 @@
 *
-!disc-kv
+!disk-kv
+!disk-kv/*
 !.gitignore
