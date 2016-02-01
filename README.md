@@ -91,7 +91,7 @@ gloves >
 You can set `res` in callbacks to control what is passed on.
 
 ```js
-gloves > require('fs').readFileSync('./package.json', 'utf8') | res.replace(/(a|e|i|o|u)/g, "@") | console.log( res )
+gloves > require('fs').readFileSync('./package.json', 'utf8') | res.replace(/([aeiou])/g, "@") | console.log( res )
 // package.json content with lower-case vowels replaced with @
 gloves >
 ```
@@ -149,6 +149,8 @@ gloves > a && b
 gloves > (a && b)
 true
 ```
+
+3. `|` can't be used in regular expressions yet.
 
 # FEEDBACK
 
